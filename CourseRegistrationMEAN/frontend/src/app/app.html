@@ -1,0 +1,85 @@
+<div class="container">
+  <h1>College Course Registration</h1>
+
+  <h2>Available Courses</h2>
+
+  <div class="course-list">
+    <div class="course-card" *ngFor="let course of courses">
+      <h3>{{ course.courseName }}</h3>
+      <p>Course Code: {{ course.courseCode }}</p>
+      <p>Department: {{ course.department }}</p>
+      <p>Credits: {{ course.credits }}</p>
+      <p>Available Seats: {{ course.availableSeats }}</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>Student Registration</h2>
+
+  <p *ngIf="message" class="success">{{ message }}</p>
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+  <form #registrationForm="ngForm" (ngSubmit)="registerStudent()">
+
+    <label>Student Name</label>
+    <input
+      type="text"
+      name="studentName"
+      [(ngModel)]="studentName"
+      required
+      minlength="3"
+      placeholder="Enter student name"
+    >
+
+    <label>Roll Number</label>
+    <input
+      type="text"
+      name="rollNo"
+      [(ngModel)]="rollNo"
+      required
+      placeholder="Enter roll number"
+    >
+
+    <label>Email</label>
+    <input
+      type="email"
+      name="email"
+      [(ngModel)]="email"
+      required
+      email
+      placeholder="Enter email"
+    >
+
+    <label>Select Course</label>
+    <select
+      name="courseId"
+      [(ngModel)]="courseId"
+      required
+    >
+      <option value="">-- Select Course --</option>
+      <option *ngFor="let course of courses" [value]="course._id">
+        {{ course.courseName }}
+      </option>
+    </select>
+
+    <button type="submit" [disabled]="registrationForm.invalid">
+      Register
+    </button>
+  </form>
+
+  <hr>
+
+  <h2>Registered Students</h2>
+
+  <div *ngFor="let registration of registrations" class="registration-card">
+    <p><strong>Name:</strong> {{ registration.studentName }}</p>
+    <p><strong>Roll Number:</strong> {{ registration.rollNo }}</p>
+    <p><strong>Email:</strong> {{ registration.email }}</p>
+    <p><strong>Course:</strong> {{ registration.courseId?.courseName }}</p>
+
+    <button type="button" (click)="cancelRegistration(registration._id)">
+      Cancel Registration
+    </button>
+  </div>
+</div>
